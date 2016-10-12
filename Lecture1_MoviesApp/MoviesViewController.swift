@@ -38,10 +38,17 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let rowData = self.moviesList[indexPath.row]
     let cell = tableView.dequeueReusableCell(withIdentifier: "moviesCell") as! MoviesCell
-    cell.titleLabel.text = rowData["title"] as? String
-    cell.overViewLabel.text = rowData["overview"] as? String
-    let url = Globals.BASE_IMG_PATH + (rowData["poster_path"] as? String)!
-    cell.avatarImg.setImageWith(URL(string: url)!)
+    if rowData.count > 0 {
+      cell.titleLabel.text = rowData["title"] as? String
+      cell.overViewLabel.text = rowData["overview"] as? String
+      if let posterPath = rowData["poster_path"] as? String {
+        let url = Globals.BASE_IMG_PATH + posterPath
+        cell.avatarImg.setImageWith(URL(string: url)!)
+      }
+      else {
+        cell.avatarImg.image = nil
+      }
+    }
     
     return cell
   }

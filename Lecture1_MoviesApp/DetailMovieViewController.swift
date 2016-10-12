@@ -12,16 +12,20 @@ class DetailMovieViewController: UIViewController {
 
   var movieObj = NSDictionary()
   
+  @IBOutlet weak var scrollView: UIScrollView!
   @IBOutlet weak var overviewLabel: UILabel!
   @IBOutlet weak var avatarImg: UIImageView!
   @IBOutlet weak var releaseDateLabel: UILabel!
   @IBOutlet weak var titleLabel: UILabel!
+  @IBOutlet weak var infoView: UIView!
   
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
       print("movieObj : \(movieObj)")
+      scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: infoView.frame.origin.y + infoView.frame.size.height)
+      
       overviewLabel.text = movieObj.value(forKey: "overview") as! String?
       titleLabel.text = movieObj.value(forKey: "title") as! String?
       releaseDateLabel.text = movieObj.value(forKey: "release_date") as! String?
