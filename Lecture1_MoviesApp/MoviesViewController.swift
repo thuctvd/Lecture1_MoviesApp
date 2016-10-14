@@ -10,15 +10,19 @@ import UIKit
 import AFNetworking
 import MBProgressHUD
 
-class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
   
   @IBOutlet weak var noticeView: UIView!
   @IBOutlet weak var tableView: UITableView!
+  @IBOutlet weak var collectionView: UICollectionView!
   @IBOutlet weak var noticeLabel: UILabel!
+  @IBOutlet weak var segmentControl: UISegmentedControl!
   
   let refreshControl = UIRefreshControl()
+  @IBOutlet weak var searchBar: UISearchBar!
   var fullData = NSDictionary()
   var moviesList = [NSDictionary]()
+  var filteredMovies = [NSDictionary]()
   var endPoint: String = "now_playing"
   
     override func viewDidLoad() {
@@ -27,6 +31,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         // Do any additional setup after loading the view.
       tableView.dataSource = self
       tableView.delegate = self
+      searchBar.delegate = self
+      collectionView.delegate = self
+      collectionView.dataSource = self
       
       noticeView.alpha = 0
       noticeLabel.text = "There's a networking error. Try again later!"
@@ -42,12 +49,24 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         // Dispose of any resources that can be recreated.
     }
   
+  @IBAction func changeLayout(_ sender: AnyObject) {
+    tableView.isHidden = sender.selectedSegmentIndex == 1
+    collectionView.isHidden = sender.selectedSegmentIndex == 0
+    
+    if (sender.selectedSegmentIndex == 0) {
+      tableView.insertSubview(refreshControl, at: 0)
+      tableView.reloadData()
+    } else {
+      collectionView.insertSubview(refreshControl, at: 0)
+      collectionView.reloadData()
+    }
+  }
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.moviesList.count
+    return self.filteredMovies.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let rowData = self.moviesList[indexPath.row]
+    let rowData = self.filteredMovies[indexPath.row]
     let cell = tableView.dequeueReusableCell(withIdentifier: "moviesCell") as! MoviesCell
     if rowData.count > 0 {
       cell.titleLabel.text = rowData["title"] as? String
@@ -62,6 +81,22 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     return cell
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gridMovieCell", for: indexPath) as! MovieCollectionViewCell
+    let rowData = filteredMovies[indexPath.row]
+    
+    if let posterPath = rowData["poster_path"] as? String {
+      let url = URL(string: Globals.BASE_IMG_PATH + posterPath)
+      cell.avatarImg.setImageWith(url!)
+    }
+    
+    return cell
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return filteredMovies.count
   }
 
   func loadMovies() {
@@ -90,6 +125,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                             //print("response: \(responseDictionary)")
                             self.fullData = responseDictionary
                             self.moviesList = self.fullData.object(forKey:"results") as! [NSDictionary]
+                            self.filteredMovies = self.moviesList
                             self.tableView.reloadData()
                             MBProgressHUD.hide(for: self.view, animated: true)
                           }
@@ -104,6 +140,36 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       self.noticeView.alpha = 0
     })
   }
+  
+  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    if (searchText == "") {
+      filteredMovies = moviesList
+    }
+    else {
+      filteredMovies = self.moviesList.filter({(movieDict: NSDictionary) -> Bool in
+        let title = movieDict["title"] as! String
+        let overview = movieDict["overview"] as! String
+        return title.localizedStandardContains(searchText) || overview.localizedStandardContains(searchText)
+      })
+    }
+    if (segmentControl.selectedSegmentIndex == 0) {
+      tableView.reloadData()
+    } else {
+      collectionView.reloadData()
+    }
+  }
+  
+  func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+    searchBar.showsCancelButton = true
+  }
+  
+  func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    searchBar.showsCancelButton = false
+    searchBar.text = ""
+    searchBar.resignFirstResponder()
+    filteredMovies = moviesList
+    tableView.reloadData()
+  }
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -112,8 +178,14 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         // Pass the selected object to the new view controller.
       if segue.identifier == "detailSeg" {
         let desView = segue.destination as? DetailMovieViewController
-        let idx = tableView.indexPathForSelectedRow
-        desView?.movieObj = moviesList[(idx?.row)!]
+        let idx: IndexPath!
+        if (segmentControl.selectedSegmentIndex == 0) {
+          idx = tableView.indexPathForSelectedRow
+        } else {
+          idx = collectionView.indexPath(for: sender as! UICollectionViewCell)
+        }
+        
+        desView?.movieObj = filteredMovies[(idx?.row)!]
       }
       else {
         
