@@ -30,9 +30,15 @@ class DetailMovieViewController: UIViewController {
       overviewLabel.sizeToFit()
       titleLabel.text = movieObj.value(forKey: "title") as! String?
       releaseDateLabel.text = movieObj.value(forKey: "release_date") as! String?
-      let url = Globals.BASE_IMG_PATH + (movieObj.value(forKey: "poster_path") as? String)!
-      avatarImg.setImageWith(URL(string: url)!)
       
+      if let avatarUrl = movieObj.value(forKey: "poster_path") as? String {
+        let url = Globals.BASE_IMG_PATH + avatarUrl
+        avatarImg.setImageWith(URL(string: url)!)
+      }
+      else {
+        avatarImg.image = nil
+      }
+            
     }
 
     override func didReceiveMemoryWarning() {

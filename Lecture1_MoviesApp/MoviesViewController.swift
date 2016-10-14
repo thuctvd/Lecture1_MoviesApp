@@ -19,6 +19,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   let refreshControl = UIRefreshControl()
   var fullData = NSDictionary()
   var moviesList = [NSDictionary]()
+  var endPoint: String = "now_playing"
   
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,7 +65,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   }
 
   func loadMovies() {
-    let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(Globals.API_KEY)")
+    let apiLink = "https://api.themoviedb.org/3/movie/\(endPoint)?api_key=\(Globals.API_KEY)"
+    let url = URL(string: apiLink)
     let request = URLRequest(
       url: url!,
       cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData,
@@ -79,7 +81,10 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     let task: URLSessionDataTask =
       session.dataTask(with: request,
                        completionHandler: { (dataOrNil, response, error) in
-                        if let data = dataOrNil {
+                        if error != nil {
+                          self.showError()
+                        }
+                        else if let data = dataOrNil {
                           if let responseDictionary = try! JSONSerialization.jsonObject(
                             with: data, options:[]) as? NSDictionary {
                             //print("response: \(responseDictionary)")
@@ -88,10 +93,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                             self.tableView.reloadData()
                             MBProgressHUD.hide(for: self.view, animated: true)
                           }
-                        }
-                        else {
-                          self.showError()
-                        }
+                        }                        
       })
     task.resume()
   }
