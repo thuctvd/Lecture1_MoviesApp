@@ -20,22 +20,24 @@ class DetailMovieViewController: UIViewController {
   @IBOutlet weak var infoView: UIView!
   
     override func viewDidLoad() {
-        super.viewDidLoad()
+      super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-      print("movieObj : \(movieObj)")
+      // Do any additional setup after loading the view.
+      //print("movieObj : \(movieObj)")
       scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: infoView.frame.origin.y + infoView.frame.size.height)
       
       overviewLabel.text = movieObj.value(forKey: "overview") as! String?
+      overviewLabel.sizeToFit()
       titleLabel.text = movieObj.value(forKey: "title") as! String?
       releaseDateLabel.text = movieObj.value(forKey: "release_date") as! String?
       let url = Globals.BASE_IMG_PATH + (movieObj.value(forKey: "poster_path") as? String)!
       avatarImg.setImageWith(URL(string: url)!)
+      
     }
 
     override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+      super.didReceiveMemoryWarning()
+      // Dispose of any resources that can be recreated.
     }
     
 

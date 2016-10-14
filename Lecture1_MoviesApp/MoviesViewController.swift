@@ -8,11 +8,15 @@
 
 import UIKit
 import AFNetworking
+import MBProgressHUD
 
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
   
+  @IBOutlet weak var noticeView: UIView!
   @IBOutlet weak var tableView: UITableView!
+  @IBOutlet weak var noticeLabel: UILabel!
   
+  let refreshControl = UIRefreshControl()
   var fullData = NSDictionary()
   var moviesList = [NSDictionary]()
   
@@ -22,6 +26,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         // Do any additional setup after loading the view.
       tableView.dataSource = self
       tableView.delegate = self
+      
+      noticeView.alpha = 0
+      noticeLabel.text = "There's a networking error. Try again later!"
+      
+      refreshControl.addTarget(self, action: #selector(loadMovies), for: UIControlEvents.valueChanged)
+      tableView.insertSubview(refreshControl, at: 0)
       
       loadMovies()
     }
@@ -64,6 +74,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       delegate: nil,
       delegateQueue: OperationQueue.main
     )
+    MBProgressHUD.showAdded(to: self.view, animated: true)
+    self.refreshControl.endRefreshing()
     let task: URLSessionDataTask =
       session.dataTask(with: request,
                        completionHandler: { (dataOrNil, response, error) in
@@ -74,12 +86,22 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                             self.fullData = responseDictionary
                             self.moviesList = self.fullData.object(forKey:"results") as! [NSDictionary]
                             self.tableView.reloadData()
+                            MBProgressHUD.hide(for: self.view, animated: true)
                           }
+                        }
+                        else {
+                          self.showError()
                         }
       })
     task.resume()
   }
   
+  func showError() {
+    noticeView.alpha = 1
+    UIView.animate(withDuration: 5, animations: {
+      self.noticeView.alpha = 0
+    })
+  }
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
