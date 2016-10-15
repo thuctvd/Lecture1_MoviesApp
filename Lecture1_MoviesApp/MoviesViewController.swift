@@ -55,6 +55,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     if (sender.selectedSegmentIndex == 0) {
       tableView.insertSubview(refreshControl, at: 0)
+      
       tableView.reloadData()
     } else {
       collectionView.insertSubview(refreshControl, at: 0)
@@ -73,23 +74,26 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       cell.overViewLabel.text = rowData["overview"] as? String
       if let posterPath = rowData["poster_path"] as? String {
         let url = Globals.BASE_IMG_PATH + posterPath
-        cell.avatarImg.setImageWith(URL(string: url)!)
+        //cell.avatarImg.setImageWith(URL(string: url)!)
+        loadImageWithEffect(imageUrl: URL(string: url)!, movieCell: cell, movieCollectionCell: nil)
       }
       else {
         cell.avatarImg.image = nil
       }
     }
+    //cell.backgroundColor = UIColor.orange
     
     return cell
   }
-  
+ 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gridMovieCell", for: indexPath) as! MovieCollectionViewCell
     let rowData = filteredMovies[indexPath.row]
     
     if let posterPath = rowData["poster_path"] as? String {
       let url = URL(string: Globals.BASE_IMG_PATH + posterPath)
-      cell.avatarImg.setImageWith(url!)
+      //cell.avatarImg.setImageWith(url!)
+      loadImageWithEffect(imageUrl: url!, movieCell: nil, movieCollectionCell: cell)
     }
     
     return cell
@@ -134,6 +138,46 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     task.resume()
   }
   
+  func loadImageWithEffect(imageUrl: URL, movieCell: MoviesCell!, movieCollectionCell : MovieCollectionViewCell!) {
+    let imgRequest = URLRequest(url: imageUrl)
+    let duration = 0.8
+    
+    if movieCell != nil {
+      movieCell.avatarImg.setImageWith(imgRequest, placeholderImage: nil, success: {
+        (imgRequest, imgResponse, image) in
+          if imgResponse != nil {
+            movieCell.avatarImg.alpha = 0.0
+            movieCell.avatarImg.image = image
+            UIView.animate(withDuration: duration, animations: {
+              movieCell.avatarImg.alpha = 1.0
+            })
+          }
+          else {
+            movieCell.avatarImg.image = image
+          }
+        }, failure: { (imageRequest, imageResponse, error) in
+          print("loadImgFailed") })
+    }
+    
+    if movieCollectionCell != nil {
+      movieCollectionCell.avatarImg.setImageWith(imgRequest, placeholderImage: nil, success: { (imgRequest, imgResponse, image) in
+          if imgResponse != nil {
+            movieCollectionCell.avatarImg.alpha = 0.0
+            movieCollectionCell.avatarImg.image = image
+            UIView.animate(withDuration: duration, animations: {
+            movieCollectionCell.avatarImg.alpha = 1.0
+          })
+        }
+        else {
+          movieCollectionCell.avatarImg.image = image
+        }
+        }, failure: { (imgRequest, imgResponse, error) in
+          print("loadImgFailed")
+      })
+    }
+    
+  }
+  
   func showError() {
     noticeView.alpha = 1
     UIView.animate(withDuration: 5, animations: {
@@ -146,11 +190,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       filteredMovies = moviesList
     }
     else {
-      filteredMovies = self.moviesList.filter({(movieDict: NSDictionary) -> Bool in
+      filteredMovies = self.moviesList.filter({ (movieDict) -> Bool in
         let title = movieDict["title"] as! String
         let overview = movieDict["overview"] as! String
         return title.localizedStandardContains(searchText) || overview.localizedStandardContains(searchText)
       })
+      
     }
     if (segmentControl.selectedSegmentIndex == 0) {
       tableView.reloadData()
@@ -176,20 +221,18 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-      if segue.identifier == "detailSeg" {
-        let desView = segue.destination as? DetailMovieViewController
-        let idx: IndexPath!
-        if (segmentControl.selectedSegmentIndex == 0) {
-          idx = tableView.indexPathForSelectedRow
-        } else {
-          idx = collectionView.indexPath(for: sender as! UICollectionViewCell)
-        }
-        
-        desView?.movieObj = filteredMovies[(idx?.row)!]
+      
+      let desView = segue.destination as? DetailMovieViewController
+      let idx: IndexPath!
+      if (segmentControl.selectedSegmentIndex == 0) {
+        idx = tableView.indexPathForSelectedRow
       }
       else {
-        
+        idx = collectionView.indexPath(for: sender as! UICollectionViewCell)
       }
+    
+      desView?.movieObj = filteredMovies[(idx?.row)!]
+      
     }
  
 

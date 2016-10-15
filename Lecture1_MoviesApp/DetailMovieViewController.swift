@@ -33,7 +33,22 @@ class DetailMovieViewController: UIViewController {
       
       if let avatarUrl = movieObj.value(forKey: "poster_path") as? String {
         let url = Globals.BASE_IMG_PATH + avatarUrl
-        avatarImg.setImageWith(URL(string: url)!)
+        let imgRequest = URLRequest(url: URL(string: url)!)
+        
+        avatarImg.setImageWith(imgRequest, placeholderImage: nil, success: {
+          (imgRequest, imgResponse, image) in
+          if imgResponse != nil {
+            self.avatarImg.alpha = 0.0
+            self.avatarImg.image = image
+            UIView.animate(withDuration: 0.8, animations: {
+              self.avatarImg.alpha = 1.0
+            })
+          }
+          else {
+            self.avatarImg.image = image
+          }
+          }, failure: { (imageRequest, imageResponse, error) in
+            print("loadImgFailed") })
       }
       else {
         avatarImg.image = nil
