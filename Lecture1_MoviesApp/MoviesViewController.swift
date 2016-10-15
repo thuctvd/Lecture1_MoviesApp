@@ -179,6 +179,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   }
   
   func showError() {
+    MBProgressHUD.hide(for: self.view, animated: true)
     noticeView.alpha = 1
     UIView.animate(withDuration: 5, animations: {
       self.noticeView.alpha = 0
