@@ -37,12 +37,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Set up the Tab Bar Controller to have two tabs
     let tabBarController = UITabBarController()
     tabBarController.viewControllers = [nowPlayingNav, topRatedNav]
+    tabBarController.tabBar.barTintColor = UIColor.lightGray
     
     // Make the Tab Bar Controller the root view controller
     window?.rootViewController = tabBarController
     window?.makeKeyAndVisible()
     
     UINavigationBar.appearance().tintColor = UIColor.black
+    UINavigationBar.appearance().backgroundColor = UIColor.black
     
     return true
   }

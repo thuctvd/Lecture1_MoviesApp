@@ -15,9 +15,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="HwY-ZQ-yNm" propertyAccessControl="none">
-                                <frame key="frameInset" minX="10" minY="106" width="300" height="462"/>
+                                <frame key="frameInset" minX="10" minY="106" width="300" height="426"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2My-iL-W6K">
                                     <size key="itemSize" width="140" height="148"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -45,30 +45,30 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="126" sectionHeaderHeight="28" sectionFooterHeight="28" id="KjO-Oz-9Vf" propertyAccessControl="localizable">
-                                <frame key="frameInset" minY="109" width="320" height="459"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="126" sectionHeaderHeight="28" sectionFooterHeight="28" id="KjO-Oz-9Vf" propertyAccessControl="none">
+                                <frame key="frameInset" minY="109" width="320" height="423"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="moviesCell" rowHeight="126" id="1fe-BS-8Ab" customClass="MoviesCell" customModule="Lecture1_MoviesApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="320" height="126"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1fe-BS-8Ab" id="s0h-WL-MGa">
-                                            <frame key="frameInset" width="287" height="125.5"/>
+                                            <frame key="frameInset" width="287" height="125"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Overview" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SH1-bT-p1N">
                                                     <frame key="frameInset" minX="113" minY="40" width="194" height="58"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <nil key="textColor"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="vLn-Sd-JMd">
                                                     <frame key="frameInset" minX="113" minY="8" width="194" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                                                    <color key="textColor" red="1" green="0.086543629600000005" blue="0.1553226426" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" red="1" green="0.94257263830000004" blue="0.28548128389999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" id="4hv-Ib-5Qo">
@@ -86,28 +86,27 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <searchBar contentMode="redraw" misplaced="YES" barStyle="black" searchBarStyle="minimal" id="bFt-Mt-H01">
-                                <frame key="frameInset" minX="-0.5" minY="25" height="128"/>
+                            <searchBar contentMode="redraw" misplaced="YES" barStyle="black" placeholder="Search Movies" id="AiM-XI-y3V" propertyAccessControl="localizable">
+                                <frame key="frameInset" minY="64" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="barTintColor" red="0.11274121500000001" green="0.55247168069999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <view contentMode="scaleToFill" misplaced="YES" restorationIdentifier="noticeView" id="Qpm-dP-don" propertyAccessControl="localizable">
-                                <frame key="frameInset" minY="65" width="320" height="47"/>
+                                <frame key="frameInset" minY="65" width="320" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" id="ShB-W5-M9P">
-                                        <frame key="frameInset" minY="6" width="320" height="21"/>
+                                        <frame key="frameInset" minY="6" width="320" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
+                                        <color key="textColor" red="1" green="0.97784847105553585" blue="0.29844019305775993" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.78233774235225617" green="0.8295975130890052" blue="0.63225236561560494" alpha="0.74396054964539005" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Movies" id="gyl-tT-gNg">
@@ -130,7 +129,7 @@
                         <outlet property="collectionView" destination="HwY-ZQ-yNm" id="SJc-Ui-EM4"/>
                         <outlet property="noticeLabel" destination="ShB-W5-M9P" id="82f-se-PDQ"/>
                         <outlet property="noticeView" destination="Qpm-dP-don" id="CDh-Sa-hRU"/>
-                        <outlet property="searchBar" destination="bFt-Mt-H01" id="XoL-jS-CTF"/>
+                        <outlet property="searchBar" destination="AiM-XI-y3V" id="C9S-PI-aUW"/>
                         <outlet property="segmentControl" destination="guj-5k-mSx" id="6xL-XT-UtI"/>
                         <outlet property="tableView" destination="KjO-Oz-9Vf" id="hKT-Dv-rkU"/>
                     </connections>

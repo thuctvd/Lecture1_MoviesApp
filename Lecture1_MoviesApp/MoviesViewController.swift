@@ -81,7 +81,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         cell.avatarImg.image = nil
       }
     }
-    //cell.backgroundColor = UIColor.orange
+    cell.backgroundColor = UIColor.black
     
     return cell
   }
@@ -94,6 +94,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       let url = URL(string: Globals.BASE_IMG_PATH + posterPath)
       loadImageWithEffect(imageUrl: url!, movieCell: nil, movieCollectionCell: cell)
     }
+    cell.backgroundColor = UIColor.black
+    cell.layer.borderWidth = 1.0
+    cell.layer.borderColor = UIColor.yellow.cgColor
     
     return cell
   }
