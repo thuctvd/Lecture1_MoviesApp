@@ -32,7 +32,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://github.com/thuctvd/Lecture1_MoviesApp/blob/master/movies.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://github.com/thuctvd/Lecture1_MoviesApp/blob/master/movies.gif?version=1' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
