@@ -36,7 +36,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       collectionView.dataSource = self
       
       noticeView.alpha = 0
-      noticeLabel.text = "There's a networking error. Try again later!"
+      noticeLabel.text = Globals.NETWORK_ERROR_NOTICE
       
       refreshControl.addTarget(self, action: #selector(loadMovies), for: UIControlEvents.valueChanged)
       tableView.insertSubview(refreshControl, at: 0)
@@ -92,7 +92,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     if let posterPath = rowData["poster_path"] as? String {
       let url = URL(string: Globals.BASE_IMG_PATH + posterPath)
-      //cell.avatarImg.setImageWith(url!)
       loadImageWithEffect(imageUrl: url!, movieCell: nil, movieCollectionCell: cell)
     }
     
